@@ -1,9 +1,13 @@
 import React, { useState, useContext } from "react";
-import PropTypes from "prop-types";
-//import GithubContext from "../../context/github/githubContext";
+import GithubContext from "../../context/github/githubContext";
+import AlertContext from "../../context/alert/alertContext";
 
-const Search = ({ searchUsers, showClear, clearUsers, setAlert }) => {
-  //const githubContext = useContext(GithubContext);
+const Search = () => {
+  const githubContext = useContext(GithubContext);
+  const alertContext = useContext(AlertContext);
+
+  const { users, clearUsers } = githubContext; //destructure: get clearUsers, users from githubContext
+  //const { setAlert } = alertContext; //destructure: get setAlert, users from alertContext
 
   const [text, setText] = useState(""); //text: name of the state, setText; default method defined, usestate(''): pass default state value of ''
 
@@ -13,9 +17,9 @@ const Search = ({ searchUsers, showClear, clearUsers, setAlert }) => {
   const onSubmit = e => {
     e.preventDefault();
     if (text === "") {
-      setAlert("Please enter a search text", "light");
+      alertContext.setAlert("Please enter a search text", "light");
     } else {
-      searchUsers(text);
+      githubContext.searchUsers(text);
       setText("");
     }
   };
@@ -36,21 +40,14 @@ const Search = ({ searchUsers, showClear, clearUsers, setAlert }) => {
           className="btn btn-dark btn-block"
         />
       </form>
-      {//chech if ShowClear is true then show clear button
-      showClear && (
+      {//chech if users array lenght is grater than zero then show clear button
+      users.length > 0 && (
         <button className="btn btn-light btn-block" onClick={clearUsers}>
           Clear
         </button>
       )}
     </div>
   );
-};
-
-Search.PropType = {
-  searchUsers: PropTypes.func.isRequired,
-  clearUsers: PropTypes.func.isRequired,
-  showClear: PropTypes.bool.isRequired,
-  setAlert: PropTypes.func.isRequired
 };
 
 export default Search;

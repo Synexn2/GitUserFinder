@@ -10,16 +10,34 @@ export default (state, action) => {
   switch (action.type) {
     case SEARCH_USERS:
       return {
-        ...state,
+        ...state, //use the spread function to return a copy of the current state
         users: action.payload,
+        loading: false
+      };
+    case GET_USER:
+      return {
+        ...state,
+        user: action.payload,
+        loading: false
+      };
+    case CLEAR_USERS:
+      return {
+        ...state,
+        users: [],
+        loading: false
+      };
+    case GET_REPOS:
+      return {
+        ...state,
+        repos: action.payload,
         loading: false
       };
     case SET_LOADING:
       return {
-        ...state,
+        ...state, //use the spread function to return a copy of the current state
         loading: true
       };
     default:
-      return state;
+      return state; //return the state as is
   }
 };
